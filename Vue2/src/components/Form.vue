@@ -9,18 +9,20 @@
       @back="close()"
       @continue="validate()"
     >
-      <template #form ref="form">
-        <v-row no-gutters>
-          <v-col
-            v-for="(field, index) in fields"
-            :key="index"
-            :cols="field.cols"
-            :sm="field.sm"
-            class="pa-3"
-          >
-            <AutomaticField v-model="item[field.value]" :field="field" />
-          </v-col>
-        </v-row>
+      <template #form>
+        <v-form ref="form">
+          <v-row no-gutters>
+            <v-col
+              v-for="(field, index) in fields"
+              :key="index"
+              :cols="field.cols"
+              :sm="field.sm"
+              class="pa-3"
+            >
+              <AutomaticField v-model="item[field.value]" :field="field" />
+            </v-col>
+          </v-row>
+        </v-form>
       </template>
     </FormBasicLayout>
   </v-row>
@@ -98,10 +100,13 @@ export default {
       this.$emit("close");
     },
     validate() {
-      this.loading = true;
-      setTimeout(() => {
-        this.loading = false;
-      });
+      if (this.$refs.form.validate()) {
+        this.loading = true;
+        setTimeout(() => {
+          this.loading = false;
+          this.$emit("sent");
+        }, 1000);
+      }
     },
   },
 };
