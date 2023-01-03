@@ -1,29 +1,78 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
+<script>
+import Form from "./components/Form.vue";
+import { useIframe } from "./utils";
+import { ref, onMounted, computed } from "vue";
+export default {
+  components: {
+    Form,
+  },
+  setup() {
+    const form = ref(null);
+    const interaction = ref({});
+    onMounted(async () => {
+      let i = await useIframe().getInteraction();
+      console.log(i);
+      interaction.value = i;
+      console.log(interaction.value);
+    });
+
+    const close = () => {
+      useIframe().close();
+    };
+    const confirm = () => {
+      useIframe().sent();
+    };
+
+    const title = computed(() => {
+      return interaction.value && interaction.value.form
+        ? interaction.value.form.split("/")[
+            interaction.value.form.split("/").length - 2
+          ]
+        : "uContact form";
+    });
+    return { interaction, title, close, confirm };
+  },
+};
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div class="header">
+    <img contain alt="" src="./assets/icons/uContact.png" width="40" />
+    <h2>
+      {{ title }}
+    </h2>
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <Form :interaction="interaction" @close="close" @confirm="confirm" />
 </template>
 
+<style>
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+#app {
+  height: calc(100% - 4rem);
+}
+</style>
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
+.header {
+  width: 100%;
+  height: 4rem;
+  background: #0095ff;
+  display: flex;
+  align-items: center;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+.header img {
+  margin: 0 10px;
 }
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+.header h2 {
+  color: white;
+  font-family: "Segoe UI";
+  font-weight: 300;
+  font-size: 2rem;
 }
 </style>
