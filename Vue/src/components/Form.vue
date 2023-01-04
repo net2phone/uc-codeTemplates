@@ -1,5 +1,6 @@
 <script setup>
 import { ref, watch } from "vue";
+const emit = defineEmits(["confirm"]);
 
 const props = defineProps(["interaction"]);
 
@@ -18,23 +19,43 @@ watch(
     interaction.value = newValue;
   }
 );
+
+const validate = () => {
+  let valid = true;
+  fields.value.forEach((field) => {
+    let input = document.getElementById(field.value);
+    let label = document.getElementById("label" + field.value);
+    if (!input.value) {
+      label.classList.add("error");
+      input.classList.add("error");
+      valid = false;
+      return false;
+    }
+    label.classList.remove("error");
+    input.classList.remove("error");
+  });
+  if (valid) {
+    emit("confirm");
+  }
+};
 </script>
 
 <template>
   <form class="form" action="javascript:void(0);">
     <div class="row" v-for="(field, index) in fields" :key="index">
-      <label :for="field.value">
+      <label :for="field.value" :id="'label' + field.value">
         {{ field.text }}
       </label>
       <input
         type="text"
         :name="field.value"
+        :id="field.value"
         v-model="interaction[field.value]"
       />
     </div>
     <div class="buttonContainer">
       <button @click="this.$emit('close')" class="cancel">Cancel</button>
-      <button @click="this.$emit('confirm')" class="confirm">Confirm</button>
+      <button @click="validate" class="confirm">Confirm</button>
     </div>
   </form>
 </template>
@@ -46,7 +67,6 @@ watch(
   height: 100%;
 
   position: relative;
-  /* background: green; */
 }
 .row {
   margin: 0 auto;
@@ -91,6 +111,7 @@ label {
 }
 input {
   margin: 5px auto;
+  padding-left: 5px;
   border: 1px solid rgb(37, 37, 37);
   border-radius: 5px;
   width: 100%;
@@ -101,6 +122,12 @@ input:focus {
   border: 1px solid #0095ff !important;
   outline: none;
 }
+.error {
+  color: #f44349;
+}
+
+input.error {
+  color: black;
+  border: 1px solid #f44349 !important;
+}
 </style>
-light: { primary: "#0095FF", secondary: "#002540", accent: "#1685b5", info:
-"#0095FF", success: "#90ce4c", warning: "#ff9800", error: "#f44349", },

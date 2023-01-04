@@ -37,10 +37,16 @@ export default {
 
 <template>
   <div class="header">
-    <img contain alt="" src="./assets/icons/uContact.png" width="40" />
-    <h2>
+    <img alt="uContactLogo" src="./assets/icons/uContact.png" width="40" />
+    <h2 style="text-align: center; flex: 1">
       {{ title }}
     </h2>
+    <img
+      alt="vueLogo"
+      src="./assets/icons/vue.svg"
+      width="40"
+      style="margin-left: auto"
+    />
   </div>
   <Form :interaction="interaction" @close="close" @confirm="confirm" />
 </template>
