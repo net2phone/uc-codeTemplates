@@ -54,7 +54,7 @@ const validate = () => {
       />
     </div>
     <div class="buttonContainer">
-      <button @click="this.$emit('close')" class="cancel">Cancel</button>
+      <button @click="$emit('close')" class="cancel">Cancel</button>
       <button @click="validate" class="confirm">Confirm</button>
     </div>
   </form>
