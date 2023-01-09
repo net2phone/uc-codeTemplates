@@ -1,25 +1,16 @@
+import {useState, useEffect} from "react"
 import { fields, useIframe } from '../utils'
 import '../css/form.css'
 
-function InputList(props) {
-  let interaction = props.interaction;
-  return fields.map((field) =>
-    <div className="row" key={field.value}>
-      <label htmlFor={field.value} id={'label' + field.value}>
-        {field.value}
-      </label>
-      <input
-        type="text"
-        name={field.value}
-        id={field.value}
-        value={interaction[field.value]}
-      />
-    </div>
-  );
-}
-
-function Buttons() {
-  let validate = ()=>{
+export default function (props) {
+  const [interaction, setInteraction] = useState({});
+  useEffect(() => {
+    setInteraction({...props.interaction})
+  },[props])
+  function handleChange(e){
+    setInteraction(prev => ({...prev, [e.target.name]:e.target.value}))
+  }
+   function validate(){
     let valid = true;
     fields.forEach((field) => {
       let input = document.getElementById(field.value);
@@ -37,22 +28,29 @@ function Buttons() {
       useIframe().sent();
     }
   }
-  let close = () => {
+  function close() {
     useIframe().close()
   }
   return (
-    <div className="buttonContainer">
+    <form className="form" onSubmit={e => e.preventDefault()}>
+      {fields.map((field) =>
+        <div className="row" key={field.value}>
+          <label htmlFor={field.value} id={'label' + field.value}>
+            {field.value}
+          </label>
+          <input
+            type="text"
+            name={field.value}
+            id={field.value}
+            onChange={handleChange}
+            value={interaction[field.value] || ''}
+          />
+        </div>
+      )}
+      <div className="buttonContainer">
       <button className="cancel" onClick={close}>Cancel</button>
       <button className="confirm" onClick={validate}>Confirm</button>
     </div>
-  )
-}
-
-export default function(props){
-  return (
-    <form className="form" onSubmit={e => e.preventDefault()}>
-      <InputList interaction={ props.interaction } />
-      <Buttons/>
     </form>
   )
 }
