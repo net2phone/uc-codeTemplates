@@ -1,3 +1,5 @@
 Base projects for uContact code
 Current templates:
-  -Vue2
+  -Vue3
+  -React
+  -Javascript
