@@ -11,11 +11,11 @@ jobs:
     - name: Create artifacts directory
       run: mkdir -p ${{github.workspace}}/artifacts
     - name: Copy vue
-      run: cp -R Vue ${{github.workspace}}/artifacts/vue-$(basename ${{github.ref}})
+      run: cp -R ${{github.workspace}}/Vue ${{github.workspace}}/artifacts/vue-$(basename ${{github.ref}})
     - name: Copy react
-      run: cp -R React ${{github.workspace}}/artifacts/react-$(basename ${{github.ref}})
+      run: cp -R ${{github.workspace}}/React ${{github.workspace}}/artifacts/react-$(basename ${{github.ref}})
     - name: Copy javascript
-      run: cp -R Javascript ${{github.workspace}}/artifacts/javascript-$(basename ${{github.ref}})
+      run: cp -R ${{github.workspace}}/Javascript ${{github.workspace}}/artifacts/javascript-$(basename ${{github.ref}})
     - name: Upload vue artifact
       uses: actions/upload-artifact@v3
       with:
