@@ -19,15 +19,15 @@ jobs:
     - name: Upload vue artifact
       uses: actions/upload-artifact@v3
       with:
-        name: vue-${{github.ref}}
-        path: ${{github.workspace}}/artifacts/vue-$(basename ${{github.ref}})
+        name: vue-$(basename ${{github.ref}})
+        path: ${{github.workspace}}/artifacts/vue-{{github.ref:10}}
     - name: Upload react artifact
       uses: actions/upload-artifact@v3
       with:
-        name: react-${{github.ref}}
-        path: ${{github.workspace}}/artifacts/react-$(basename ${{github.ref}})
+        name: react-$(basename ${{github.ref}})
+        path: ${{github.workspace}}/artifacts/react-${{github.ref:10}}
     - name: Upload javascript artifact
       uses: actions/upload-artifact@v3
       with:
-        name: javascript-${{github.ref}}
-        path: ${{github.workspace}}/artifacts/javascript-$(basename ${{github.ref}})
+        name: javascript-$(basename ${{github.ref}})
+        path: ${{github.workspace}}/artifacts/javascript-${{github.ref:10}}
