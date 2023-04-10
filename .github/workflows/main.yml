@@ -8,6 +8,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+    - name: Create artifacts directory
+      run: mkdir -p ${{github.workspace}}/artifacts
     - name: Copy vue
       run: cp -R Vue ${{github.workspace}}/artifacts/vue-$(basename ${{github.ref}})
     - name: Copy react
