@@ -20,17 +20,26 @@ jobs:
     - name: Copy javascript
       run: cp -R ${{github.workspace}}/Javascript ${{github.workspace}}/artifacts/javascript-${{ steps.vars.outputs.basename }}
     - name: Upload vue artifact
-      uses: actions/upload-artifact@v3
+      uses: svenstaro/upload-release-action@v2
       with:
-        name: vue-${{ steps.vars.outputs.basename }}
-        path: ${{github.workspace}}/artifacts/vue-${{ steps.vars.outputs.basename }}
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: ${{github.workspace}}/artifacts/vue-${{ steps.vars.outputs.basename }}
+        asset_name: vue-${{ steps.vars.outputs.basename }}
+        tag: ${{ github.ref }}
+        overwrite: true
     - name: Upload react artifact
-      uses: actions/upload-artifact@v3
+      uses: svenstaro/upload-release-action@v2
       with:
-        name: react-${{ steps.vars.outputs.basename }}
-        path: ${{github.workspace}}/artifacts/react-${{ steps.vars.outputs.basename }}
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: ${{github.workspace}}/artifacts/react-${{ steps.vars.outputs.basename }}
+        asset_name: react-${{ steps.vars.outputs.basename }}
+        tag: ${{ github.ref }}
+        overwrite: true
     - name: Upload javascript artifact
-      uses: actions/upload-artifact@v3
+      uses: svenstaro/upload-release-action@v2
       with:
-        name: javascript-${{ steps.vars.outputs.basename }}
-        path: ${{github.workspace}}/artifacts/javascript-${{ steps.vars.outputs.basename }}
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: ${{github.workspace}}/artifacts/javascript-${{ steps.vars.outputs.basename }}
+        asset_name: javascript-${{ steps.vars.outputs.basename }}
+        tag: ${{ github.ref }}
+        overwrite: true
