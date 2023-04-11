@@ -4,51 +4,31 @@ on:
       - '*'
 jobs:
   copy-folders:
+    strategy:
+      matrix:
+        framework:
+          - vue
+          - react
+          - javascript
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-    - name: Set variables
-      id: vars
-      run: echo "basename=$(basename ${{github.ref}})" >> $GITHUB_OUTPUT
-    - name: Create artifacts directory
-      run: mkdir -p ${{github.workspace}}/artifacts
-    - name: Copy vue
-      run: | 
-        cd ${{github.workspace}}/artifacts
-        cp -R ${{github.workspace}}/Vue vue-${{ steps.vars.outputs.basename }}
-        zip -9 -r vue-${{ steps.vars.outputs.basename }}.zip vue-${{ steps.vars.outputs.basename }}
-    - name: Copy react
-      run: | 
-        cd ${{github.workspace}}/artifacts
-        cp -R ${{github.workspace}}/React react-${{ steps.vars.outputs.basename }}
-        zip -9 -r react-${{ steps.vars.outputs.basename }}.zip react-${{ steps.vars.outputs.basename }}
-    - name: Copy javascript
-      run: | 
-        cd ${{github.workspace}}/artifacts
-        cp -R ${{github.workspace}}/Javascript javascript-${{ steps.vars.outputs.basename }}
-        zip -9 -r javascript-${{ steps.vars.outputs.basename }}.zip javascript-${{ steps.vars.outputs.basename }}
-    - name: Upload vue artifact
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{github.workspace}}/artifacts/vue-${{ steps.vars.outputs.basename }}.zip
-        asset_name: vue-${{ steps.vars.outputs.basename }}.zip
-        tag: ${{ github.ref }}
-        overwrite: true
-    - name: Upload react artifact
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{github.workspace}}/artifacts/react-${{ steps.vars.outputs.basename }}.zip
-        asset_name: react-${{ steps.vars.outputs.basename }}.zip
-        tag: ${{ github.ref }}
-        overwrite: true
-    - name: Upload javascript artifact
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{github.workspace}}/artifacts/javascript-${{ steps.vars.outputs.basename }}.zip
-        asset_name: javascript-${{ steps.vars.outputs.basename }}.zip
-        tag: ${{ github.ref }}
-        overwrite: true
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set variables
+        id: vars
+        run: echo "basename=$(basename ${{github.ref}})" >> $GITHUB_OUTPUT
+      - name: Create artifacts directory
+        run: mkdir -p ${{github.workspace}}/artifacts
+      - name: Copy and zip ${{ matrix.framework }}
+        run: |
+          cd ${{github.workspace}}/artifacts
+          cp -R ${{github.workspace}}/${{ matrix.framework }} ${{ matrix.framework }}-${{ steps.vars.outputs.basename }}
+          zip -9 -r ${{ matrix.framework }}-${{ steps.vars.outputs.basename }}.zip ${{ matrix.framework }}-${{ steps.vars.outputs.basename }}
+      - name: Upload ${{ matrix.framework }} artifact
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{github.workspace}}/artifacts/${{ matrix.framework }}-${{ steps.vars.outputs.basename }}.zip
+          asset_name: ${{ matrix.framework }}-${{ steps.vars.outputs.basename }}.zip
+          tag: ${{ github.ref }}
+          overwrite: true
