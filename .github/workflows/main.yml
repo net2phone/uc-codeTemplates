@@ -13,7 +13,8 @@ jobs:
       run: echo "basename=$(basename ${{github.ref}})" >> $GITHUB_OUTPUT
     - name: Create artifacts directory
       run: mkdir -p ${{github.workspace}}/artifacts
-    - name: | 
+    - name: Copy vue
+      run: | 
         cp -R ${{github.workspace}}/Vue ${{github.workspace}}/artifacts/vue-${{ steps.vars.outputs.basename }}
         zip -9 -r ${{github.workspace}}/artifacts/vue-${{ steps.vars.outputs.basename }}.zip ${{github.workspace}}/artifacts/vue-${{ steps.vars.outputs.basename }}
     - name: Copy react
