@@ -17,20 +17,17 @@ jobs:
       run: | 
         cd ${{github.workspace}}/artifacts
         cp -R ${{github.workspace}}/Vue vue-${{ steps.vars.outputs.basename }}
-        cd vue-${{ steps.vars.outputs.basename }}
-        zip -9 -r vue-${{ steps.vars.outputs.basename }}.zip .
+        zip -9 -r vue-${{ steps.vars.outputs.basename }}.zip vue-${{ steps.vars.outputs.basename }}
     - name: Copy react
       run: | 
         cd ${{github.workspace}}/artifacts
         cp -R ${{github.workspace}}/React react-${{ steps.vars.outputs.basename }}
-        cd react-${{ steps.vars.outputs.basename }}
-        zip -9 -r react-${{ steps.vars.outputs.basename }}.zip .
+        zip -9 -r react-${{ steps.vars.outputs.basename }}.zip react-${{ steps.vars.outputs.basename }}
     - name: Copy javascript
       run: | 
         cd ${{github.workspace}}/artifacts
         cp -R ${{github.workspace}}/Javascript javascript-${{ steps.vars.outputs.basename }}
-        cd javascript-${{ steps.vars.outputs.basename }}
-        zip -9 -r javascript-${{ steps.vars.outputs.basename }}.zip .
+        zip -9 -r javascript-${{ steps.vars.outputs.basename }}.zip javascript-${{ steps.vars.outputs.basename }}
     - name: Upload vue artifact
       uses: svenstaro/upload-release-action@v2
       with:
