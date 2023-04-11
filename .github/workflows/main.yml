@@ -13,33 +13,38 @@ jobs:
       run: echo "basename=$(basename ${{github.ref}})" >> $GITHUB_OUTPUT
     - name: Create artifacts directory
       run: mkdir -p ${{github.workspace}}/artifacts
-    - name: Copy vue
-      run: cp -R ${{github.workspace}}/Vue ${{github.workspace}}/artifacts/vue-${{ steps.vars.outputs.basename }}
+    - name: | 
+        cp -R ${{github.workspace}}/Vue ${{github.workspace}}/artifacts/vue-${{ steps.vars.outputs.basename }}
+        zip -9 -r ${{github.workspace}}/artifacts/vue-${{ steps.vars.outputs.basename }}.zip ${{github.workspace}}/artifacts/vue-${{ steps.vars.outputs.basename }}
     - name: Copy react
-      run: cp -R ${{github.workspace}}/React ${{github.workspace}}/artifacts/react-${{ steps.vars.outputs.basename }}
+      run: | 
+        cp -R ${{github.workspace}}/React ${{github.workspace}}/artifacts/react-${{ steps.vars.outputs.basename }}
+        zip -9 -r ${{github.workspace}}/artifacts/react-${{ steps.vars.outputs.basename }}.zip ${{github.workspace}}/artifacts/react-${{ steps.vars.outputs.basename }}
     - name: Copy javascript
-      run: cp -R ${{github.workspace}}/Javascript ${{github.workspace}}/artifacts/javascript-${{ steps.vars.outputs.basename }}
+      run: | 
+        cp -R ${{github.workspace}}/Javascript ${{github.workspace}}/artifacts/javascript-${{ steps.vars.outputs.basename }}
+        zip -9 -r ${{github.workspace}}/artifacts/javascript-${{ steps.vars.outputs.basename }}.zip ${{github.workspace}}/artifacts/javascript-${{ steps.vars.outputs.basename }}
     - name: Upload vue artifact
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{github.workspace}}/artifacts/vue-${{ steps.vars.outputs.basename }}
-        asset_name: vue-${{ steps.vars.outputs.basename }}
+        file: ${{github.workspace}}/artifacts/vue-${{ steps.vars.outputs.basename }}.zip
+        asset_name: vue-${{ steps.vars.outputs.basename }}.zip
         tag: ${{ github.ref }}
         overwrite: true
     - name: Upload react artifact
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{github.workspace}}/artifacts/react-${{ steps.vars.outputs.basename }}
-        asset_name: react-${{ steps.vars.outputs.basename }}
+        file: ${{github.workspace}}/artifacts/react-${{ steps.vars.outputs.basename }}.zip
+        asset_name: react-${{ steps.vars.outputs.basename }}.zip
         tag: ${{ github.ref }}
         overwrite: true
     - name: Upload javascript artifact
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{github.workspace}}/artifacts/javascript-${{ steps.vars.outputs.basename }}
-        asset_name: javascript-${{ steps.vars.outputs.basename }}
+        file: ${{github.workspace}}/artifacts/javascript-${{ steps.vars.outputs.basename }}.zip
+        asset_name: javascript-${{ steps.vars.outputs.basename }}.zip
         tag: ${{ github.ref }}
         overwrite: true
