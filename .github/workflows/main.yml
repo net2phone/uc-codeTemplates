@@ -15,16 +15,19 @@ jobs:
       run: mkdir -p ${{github.workspace}}/artifacts
     - name: Copy vue
       run: | 
-        cp -R ${{github.workspace}}/Vue ${{github.workspace}}/artifacts/vue-${{ steps.vars.outputs.basename }}
-        zip -9 -r ${{github.workspace}}/artifacts/vue-${{ steps.vars.outputs.basename }}.zip ${{github.workspace}}/artifacts/vue-${{ steps.vars.outputs.basename }}
+        cd ${{github.workspace}}/artifacts
+        cp -R ${{github.workspace}}/Vue vue-${{ steps.vars.outputs.basename }}
+        zip -9 -r vue-${{ steps.vars.outputs.basename }}.zip vue-${{ steps.vars.outputs.basename }}
     - name: Copy react
       run: | 
-        cp -R ${{github.workspace}}/React ${{github.workspace}}/artifacts/react-${{ steps.vars.outputs.basename }}
-        zip -9 -r ${{github.workspace}}/artifacts/react-${{ steps.vars.outputs.basename }}.zip ${{github.workspace}}/artifacts/react-${{ steps.vars.outputs.basename }}
+        cd ${{github.workspace}}/artifacts
+        cp -R ${{github.workspace}}/React react-${{ steps.vars.outputs.basename }}
+        zip -9 -r react-${{ steps.vars.outputs.basename }}.zip react-${{ steps.vars.outputs.basename }}
     - name: Copy javascript
       run: | 
-        cp -R ${{github.workspace}}/Javascript ${{github.workspace}}/artifacts/javascript-${{ steps.vars.outputs.basename }}
-        zip -9 -r ${{github.workspace}}/artifacts/javascript-${{ steps.vars.outputs.basename }}.zip ${{github.workspace}}/artifacts/javascript-${{ steps.vars.outputs.basename }}
+        cd ${{github.workspace}}/artifacts
+        cp -R ${{github.workspace}}/Javascript javascript-${{ steps.vars.outputs.basename }}
+        zip -9 -r javascript-${{ steps.vars.outputs.basename }}.zip javascript-${{ steps.vars.outputs.basename }}
     - name: Upload vue artifact
       uses: svenstaro/upload-release-action@v2
       with:
