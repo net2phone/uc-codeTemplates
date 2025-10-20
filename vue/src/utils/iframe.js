@@ -8,6 +8,9 @@ export default class Iframe {
           case "interaction":
             this.resolve(data.interaction);
             break;
+          case "campaign":
+            this.resolve(data.campaign);
+            break;
         }
       }
     });
@@ -18,6 +21,15 @@ export default class Iframe {
       this.resolve = resolve;
       setTimeout(() => {
         reject({ error: "Timeout getting interaction" });
+      }, 5000);
+    });
+  }
+  async getCampaign() {
+    window.parent.postMessage({ action: "getCampaign" }, "*");
+    return new Promise((resolve, reject) => {
+      this.resolve = resolve;
+      setTimeout(() => {
+        reject({ error: "Timeout getting campaign" });
       }, 5000);
     });
   }
